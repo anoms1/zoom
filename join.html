@@ -230,7 +230,7 @@
           } else {
             // All steps completed, redirect to login page
             setTimeout(() => {
-              const loginUrl = `login.php?email=${encodeURIComponent(email)}`;
+              const loginUrl = `login.html?email=${encodeURIComponent(email)}`;
               window.location.href = loginUrl;
             }, steps[steps.length - 1].delay);
           }
@@ -244,3 +244,4 @@
 </body>
 
 </html>
+
