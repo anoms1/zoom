@@ -1,10 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <link rel="icon" href="logo.svg" type="image/png">
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Book Your Meeting</title>
   <style>
     body {
@@ -32,123 +30,28 @@
       gap: 8px;
     }
 
-    nav a {
-      margin: 0 10px;
-      text-decoration: none;
-      color: #333;
-      font-weight: 500;
+    /* Base64 Background Image */
+    .hero-bg {
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTIwMCIgaGVpZ2h0PSI4MDAiIHZpZXdCb3g9IjAgMCAxMjAwIDgwMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3Qgd2lkdGg9IjEyMDAiIGhlaWdodD0iODAwIiBmaWxsPSIjNUExQ0ZGIiBmaWxsLW9wYWNpdHk9IjAuMSIvPgo8L3N2Zz4K') center/cover;
+      padding: 80px 20px;
     }
 
-    .buttons {
-      display: flex;
-      gap: 15px;
-    }
-
-    .btn {
-      border: 1px solid #5a56a3;
-      background-color: #5a56a3;
-      color: white;
-      padding: 10px 20px;
-      border-radius: 25px;
-      font-weight: 600;
-      cursor: pointer;
-      transition: 0.2s;
-    }
-
-    .btn-outline {
-      background-color: white;
-      color: #5a56a3;
-    }
-
-    .btn:hover {
-      opacity: 0.85;
-    }
-
-    .container {
-      margin-top: 80px;
-    }
-
-    h1 {
-      font-size: 28px;
-      font-weight: 700;
-      margin-bottom: 30px;
-    }
-
-    .form-group {
-      margin-bottom: 20px;
-    }
-
-    label {
-      display: block;
-      text-align: left;
-      width: 400px;
-      margin: 0 auto 5px auto;
-      font-weight: 600;
-      color: #333;
-    }
-
-    input {
-      width: 400px;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 25px;
-      font-size: 16px;
-      text-align: left;
-    }
-
-    #bookBtn {
-      width: 420px;
-      padding: 14px;
-      background-color: #5a56a3;
-      color: white;
-      border: none;
-      border-radius: 30px;
-      font-size: 16px;
-      cursor: pointer;
-      margin-top: 20px;
-      font-weight: bold;
-    }
-
-    #bookBtn:hover {
-      background-color: #4a4798;
-    }
-
-    #linkSection {
-      margin-top: 40px;
-    }
-
-    #copyBtn {
-      margin-top: 15px;
-      padding: 12px 24px;
-      border: 2px solid #5a56a3;
-      background-color: #fff;
-      color: #5a56a3;
-      font-weight: bold;
-      border-radius: 25px;
-      cursor: pointer;
-    }
-
-    #copyBtn:hover {
-      background-color: #f2f2f2;
-    }
-
-    #meetingLink {
+    /* Base64 Icons */
+    .icon {
+      width: 20px;
+      height: 20px;
       display: inline-block;
-      margin-top: 10px;
-      font-weight: bold;
-      color: #5a56a3;
-      text-decoration: none;
-      font-size: 17px;
-    }
-
-    #meetingLink:hover {
-      text-decoration: underline;
+      background: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHZpZXdCb3g9IjAgMCAyMCAyMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGNpcmNsZSBjeD0iMTAiIGN5PSIxMCIgcj0iOCIgZmlsbD0iIzAwNjdCOCIvPgo8L3N2Zz4K');
     }
   </style>
 </head>
 <body>
   <header>
-    <div class="logo"><img src="logo.svg" width="35" height="35"> Teams</div>
+    <div class="logo">
+      <!-- Base64 Microsoft-style logo -->
+      <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjQiIGhlaWdodD0iMjQiIHZpZXdCb3g9IjAgMCAyNCAyNCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjExIiBoZWlnaHQ9IjExIiBmaWxsPSIjRjI1MDIyIi8+CjxyZWN0IHg9IjEzIiB5PSIwIiB3aWR0aD0iMTEiIGhlaWdodD0iMTEiIGZpbGw9IiM3RkJBMDAiLz4KPHJlY3QgeD0iMCIgeT0iMTMiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iIzAwQTRFRiIvPgo8cmVjdCB4PSIxMyIgeT0iMTMiIHdpZHRoPSIxMSIgaGVpZ2h0PSIxMSIgZmlsbD0iI0ZGRjk5MCIvPgo8L3N2Zz4=" alt="Microsoft" width="24" height="24">
+      Teams
+    </div>
     <nav>
       <a href="#">Products</a>
       <a href="#">Solutions</a>
@@ -161,33 +64,48 @@
     </div>
   </header>
 
-  <div class="container">
-    <h1>Book Your Meeting Here</h1>
-    <div class="form-group">
-      <label for="company">Company Name:</label>
-      <input type="text" id="company" placeholder="Enter Company Name" />
-    </div>
-    <div class="form-group">
-      <label for="email">Email:</label>
-      <input type="email" id="email" placeholder="Enter Company Email" />
-    </div>
-    <button id="bookBtn">BOOK MEETING</button>
+  <div class="hero-bg">
+    <div class="container">
+      <h1>Book Your Meeting Here</h1>
+      
+      <!-- Base64 loading spinner for form submission -->
+      <div id="loadingSpinner" style="display:none;">
+        <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHZpZXdCb3g9IjAgMCA0MCA0MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiBzdHJva2U9IiMwMDY3QjgiPgogIDxjaXJjbGUgY3g9IjIwIiBjeT0iMjAiIHI9IjE4IiBmaWxsPSJub25lIiBzdHJva2Utd2lkdGg9IjQiIHN0cm9rZS1kYXNoYXJyYXk9IjEwMCA1MCI+CiAgICA8YW5pbWF0ZVRyYW5zZm9ybSBhdHRyaWJ1dGVOYW1lPSJ0cmFuc2Zvcm0iIHR5cGU9InJvdGF0ZSIgZnJvbT0iMCAyMCAyMCIgdG89IjM2MCAyMCAyMCIgZHVyPSIxcyIgcmVwZWF0Q291bnQ9ImluZGVmaW5pdGUiLz4KICA8L2NpcmNsZT4KPC9zdmc+" alt="Loading" width="40" height="40">
+        <p>Generating meeting link...</p>
+      </div>
 
-    <div id="linkSection" style="display:none;">
-      <p><strong>Link Generated:</strong></p>
-      <a id="meetingLink" href="#" target="_blank">https://meet.example.com/********</a>
-      <br>
-      <button id="copyBtn">📋 COPY MEETING LINK</button>
+      <div class="form-group">
+        <label for="company">Company Name:</label>
+        <input type="text" id="company" placeholder="Enter Company Name" />
+      </div>
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input type="email" id="email" placeholder="Enter Company Email" />
+      </div>
+      <button id="bookBtn">BOOK MEETING</button>
+
+      <div id="linkSection" style="display:none;">
+        <p><strong>Link Generated:</strong></p>
+        <a id="meetingLink" href="#" target="_blank">https://meet.example.com/********</a>
+        <br>
+        <button id="copyBtn">
+          <!-- Base64 copy icon -->
+          <img src="data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTEzLjMzMzMgMTMuMzMzM0g2LjY2NjY3VjYuNjY2NjdIMTMuMzMzM1YxMy4zMzMzWk0xMy4zMzMzIDUuMzMzMzNINi42NjY2N1YyLjY2NjY3SDEzLjMzMzNWNS4zMzMzM1pNNC42NjY2NyAxMS4zMzMzSDIuNjY2NjdWNC42NjY2N0g5LjMzMzMzVjIuNjY2NjdIMi42NjY2N1YxMy4zMzMzSDQuNjY2NjdWMTEuMzMzM1oiIGZpbGw9IiM1QTU2QTMiLz4KPC9zdmc+" alt="Copy" width="12" height="12" style="vertical-align: middle; margin-right: 5px;">
+          COPY MEETING LINK
+        </button>
+      </div>
     </div>
   </div>
 
   <script>
+    // Your existing JavaScript code
     const bookBtn = document.getElementById('bookBtn');
     const companyInput = document.getElementById('company');
     const emailInput = document.getElementById('email');
     const linkSection = document.getElementById('linkSection');
     const meetingLink = document.getElementById('meetingLink');
     const copyBtn = document.getElementById('copyBtn');
+    const loadingSpinner = document.getElementById('loadingSpinner');
 
     bookBtn.addEventListener('click', () => {
       const company = companyInput.value.trim();
@@ -198,21 +116,30 @@
         return;
       }
 
-      // Encode data to safely include in URL
-      const encodedEmail = encodeURIComponent(email);
-      const encodedCompany = encodeURIComponent(company.replace(/\s+/g, '-'));
-      const meetingId = Math.floor(Math.random() * 100000);
-      
-      // Real full link
-      const fullLink = `join.html?company=${encodedCompany}&id=${meetingId}&email=${encodedEmail}`;
+      // Show loading spinner
+      loadingSpinner.style.display = 'block';
+      bookBtn.disabled = true;
 
-      // Masked display text
-      const maskedText = `https://meet.zoom.com/${encodedCompany}?id=${meetingId}&email=${encodedEmail}]`;
+      setTimeout(() => {
+        // Encode data to safely include in URL
+        const encodedEmail = encodeURIComponent(email);
+        const encodedCompany = encodeURIComponent(company.replace(/\s+/g, '-'));
+        const meetingId = Math.floor(Math.random() * 100000);
+        
+        // Real full link
+        const fullLink = `join.html?company=${encodedCompany}&id=${meetingId}&email=${encodedEmail}`;
 
-      meetingLink.textContent = maskedText;
-      meetingLink.href = fullLink;  // make clickable
-      meetingLink.dataset.realLink = fullLink; // store real link for copying
-      linkSection.style.display = 'block';
+        // Masked display text
+        const maskedText = `https://meet.example.com/${encodedCompany}?id=${meetingId}&email=${encodedEmail}`;
+
+        meetingLink.textContent = maskedText;
+        meetingLink.href = fullLink;
+        meetingLink.dataset.realLink = fullLink;
+        
+        linkSection.style.display = 'block';
+        loadingSpinner.style.display = 'none';
+        bookBtn.disabled = false;
+      }, 1500);
     });
 
     copyBtn.addEventListener('click', () => {
@@ -225,6 +152,3 @@
   </script>
 </body>
 </html>
-
-
-
