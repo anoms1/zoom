@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="icon" href="/logo/logo.svg" type="image/png">
+
+  <title>Book Your Meeting</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 40px;
+      border-bottom: 1px solid #ddd;
+    }
+
+    .logo {
+      font-size: 22px;
+      font-weight: bold;
+      color: #444;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      text-decoration: none;
+      color: #333;
+      font-weight: 500;
+    }
+
+    .buttons {
+      display: flex;
+      gap: 15px;
+    }
+
+    .btn {
+      border: 1px solid #5a56a3;
+      background-color: #5a56a3;
+      color: white;
+      padding: 10px 20px;
+      border-radius: 25px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .btn-outline {
+      background-color: white;
+      color: #5a56a3;
+    }
+
+    .btn:hover {
+      opacity: 0.85;
+    }
+
+    .container {
+      margin-top: 80px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 700;
+      margin-bottom: 30px;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      text-align: left;
+      width: 400px;
+      margin: 0 auto 5px auto;
+      font-weight: 600;
+      color: #333;
+    }
+
+    input {
+      width: 400px;
+      padding: 12px;
+      border: 1px solid #ccc;
+      border-radius: 25px;
+      font-size: 16px;
+      text-align: left;
+    }
+
+    #bookBtn {
+      width: 420px;
+      padding: 14px;
+      background-color: #5a56a3;
+      color: white;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      margin-top: 20px;
+      font-weight: bold;
+    }
+
+    #bookBtn:hover {
+      background-color: #4a4798;
+    }
+
+    #linkSection {
+      margin-top: 40px;
+    }
+
+    #copyBtn {
+      margin-top: 15px;
+      padding: 12px 24px;
+      border: 2px solid #5a56a3;
+      background-color: #fff;
+      color: #5a56a3;
+      font-weight: bold;
+      border-radius: 25px;
+      cursor: pointer;
+    }
+
+    #copyBtn:hover {
+      background-color: #f2f2f2;
+    }
+
+    #meetingLink {
+      display: inline-block;
+      margin-top: 10px;
+      font-weight: bold;
+      color: #5a56a3;
+      text-decoration: none;
+      font-size: 17px;
+    }
+
+    #meetingLink:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo"><img src="/logo/logo.svg" width="35" height="35"> Teams</div>
+    <nav>
+      <a href="#">Products</a>
+      <a href="#">Solutions</a>
+      <a href="#">Resources</a>
+      <a href="#">Plans & Pricing</a>
+    </nav>
+    <div class="buttons">
+      <button class="btn btn-outline">Contact Sales</button>
+      <button class="btn">Sign Up Free</button>
+    </div>
+  </header>
+
+  <div class="container">
+    <h1>Book Your Meeting Here</h1>
+    <div class="form-group">
+      <label for="company">Company Name:</label>
+      <input type="text" id="company" placeholder="Enter Company Name" />
+    </div>
+    <div class="form-group">
+      <label for="email">Email:</label>
+      <input type="email" id="email" placeholder="Enter Company Email" />
+    </div>
+    <button id="bookBtn">BOOK MEETING</button>
+
+    <div id="linkSection" style="display:none;">
+      <p><strong>Link Generated:</strong></p>
+      <a id="meetingLink" href="#" target="_blank">https://meet.example.com/********</a>
+      <br>
+      <button id="copyBtn">📋 COPY MEETING LINK</button>
+    </div>
+  </div>
+
+  <script>
+    const bookBtn = document.getElementById('bookBtn');
+    const companyInput = document.getElementById('company');
+    const emailInput = document.getElementById('email');
+    const linkSection = document.getElementById('linkSection');
+    const meetingLink = document.getElementById('meetingLink');
+    const copyBtn = document.getElementById('copyBtn');
+
+    bookBtn.addEventListener('click', () => {
+      const company = companyInput.value.trim();
+      const email = emailInput.value.trim();
+
+      if (!company || !email) {
+        alert('Please enter both Company Name and Email.');
+        return;
+      }
+
+      // Encode data to safely include in URL
+      const encodedEmail = encodeURIComponent(email);
+      const encodedCompany = encodeURIComponent(company.replace(/\s+/g, '-'));
+      const meetingId = Math.floor(Math.random() * 100000);
+      
+      // Real full link
+      const fullLink = `join.html?company=${encodedCompany}&id=${meetingId}&email=${encodedEmail}`;
+
+      // Masked display text
+      const maskedText = `https://meet.zoom.com/${encodedCompany}?id=${meetingId}&email=${encodedEmail}]`;
+
+      meetingLink.textContent = maskedText;
+      meetingLink.href = fullLink;  // make clickable
+      meetingLink.dataset.realLink = fullLink; // store real link for copying
+      linkSection.style.display = 'block';
+    });
+
+    copyBtn.addEventListener('click', () => {
+      const realLink = meetingLink.dataset.realLink;
+      if (realLink) {
+        navigator.clipboard.writeText(realLink);
+        alert('Meeting link copied to clipboard!');
+      }
+    });
+  </script>
+</body>
+</html>
+
+

